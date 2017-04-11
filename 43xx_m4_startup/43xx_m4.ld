@@ -12,6 +12,16 @@ SECTIONS
         FILL(0xff)
         __vectors_start__ = ABSOLUTE(.) ;
         KEEP(*(.isr_vector))
+
+        /* Meta data, e.g. firmware version may be stored here.
+         * This place right after the isr_vector is chosen because the
+         * memory address is very predictable / stable across different builds.
+         * This is an advantage for bootloaders etc.
+         */
+        __meta_begin__ = ABSOLUTE(.);
+        . = ALIGN(4) ;
+        KEEP(*(.meta))
+		__meta_end__ = ABSOLUTE(.);
         
         /* Global Section Table */
         . = ALIGN(4) ;
